@@ -1,14 +1,13 @@
-// login elements 
+// login elements
 const login = document.querySelector(".login")
-const loginForm = document.querySelector(".login__form")
-const loginInput = document.querySelector(".login__input")
+const loginForm = login.querySelector(".login__form")
+const loginInput = login.querySelector(".login__input")
 
-// chat elements 
+// chat elements
 const chat = document.querySelector(".chat")
-const chatForm = document.querySelector(".chat__form")
-const chatInput = document.querySelector(".chat__input")
-const chatMessages = document.querySelector(".chat__messages")
-
+const chatForm = chat.querySelector(".chat__form")
+const chatInput = chat.querySelector(".chat__input")
+const chatMessages = chat.querySelector(".chat__messages")
 
 const colors = [
     "cadetblue",
@@ -19,15 +18,14 @@ const colors = [
     "gold"
 ]
 
-const user = {id: "", name: "", color: ""}
+const user = { id: "", name: "", color: "" }
 
-let websocket   
+let websocket
 
 const createMessageSelfElement = (content) => {
     const div = document.createElement("div")
 
     div.classList.add("message--self")
-
     div.innerHTML = content
 
     return div
@@ -62,12 +60,13 @@ const scrollScreen = () => {
     })
 }
 
-const processMessage = ({data}) => {
-    const {userId, userName, userColor, content} = JSON.parse(data)
+const processMessage = ({ data }) => {
+    const { userId, userName, userColor, content } = JSON.parse(data)
 
-    const message = userId == user.id 
-    ? createMessageSelfElement(content) 
-    : createMessageOtherElement(content, userName, userColor)
+    const message =
+        userId == user.id
+            ? createMessageSelfElement(content)
+            : createMessageOtherElement(content, userName, userColor)
 
     chatMessages.appendChild(message)
 
@@ -86,9 +85,6 @@ const handleLogin = (event) => {
 
     websocket = new WebSocket("ws://chat-backend-taxq.onrender.com")
     websocket.onmessage = processMessage
-
-
-    console.log(user)
 }
 
 const sendMessage = (event) => {
@@ -102,6 +98,7 @@ const sendMessage = (event) => {
     }
 
     websocket.send(JSON.stringify(message))
+
     chatInput.value = ""
 }
 
